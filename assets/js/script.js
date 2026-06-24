@@ -134,6 +134,50 @@ for (let i = 0; i < formInputs.length; i++) {
   });
 }
 
+// Google Sheets form submission
+if (form) {
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    
+    const statusMsg = document.getElementById("form-status");
+    const originalBtnText = formBtn.innerHTML;
+    
+    formBtn.setAttribute("disabled", "");
+    formBtn.innerHTML = "<ion-icon name='sync-outline'></ion-icon><span>Sending...</span>";
+    statusMsg.style.display = "none";
+    
+    const formData = new FormData(form);
+    
+    fetch("https://script.google.com/macros/s/AKfycbzl_u2feujMu7EpMA5cXoikN--EPF_qWipS55HMb3ZkI8bCEPAewO92V0OeSQuRYecu/exec", {
+      method: "POST",
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.result === "success") {
+        statusMsg.style.color = "var(--orange-yellow-crayola)";
+        statusMsg.innerText = "Message sent successfully!";
+        statusMsg.style.display = "block";
+        form.reset();
+      } else {
+        throw new Error("Form submission failed");
+      }
+    })
+    .catch(error => {
+      statusMsg.style.color = "#ff5e5e"; // error red
+      statusMsg.innerText = "Oops! Something went wrong. Please try again later.";
+      statusMsg.style.display = "block";
+    })
+    .finally(() => {
+      formBtn.removeAttribute("disabled");
+      formBtn.innerHTML = originalBtnText;
+      if (formInputs.length > 0) {
+        formInputs[0].dispatchEvent(new Event('input'));
+      }
+    });
+  });
+}
+
 
 
 // page navigation variables
@@ -155,5 +199,106 @@ for (let i = 0; i < navigationLinks.length; i++) {
       }
     }
 
+  });
+}
+
+// Custom Searchable Dropdown Logic
+const countryInput = document.getElementById("country-input");
+const countryDropdown = document.getElementById("country-dropdown");
+
+if (countryInput && countryDropdown) {
+  const items = countryDropdown.querySelectorAll("li");
+
+  function updateDropdownVisibility(forceOpen = false) {
+    const filter = countryInput.value.toLowerCase();
+    let exactMatch = false;
+    let visibleCount = 0;
+
+    items.forEach(item => {
+      const text = item.innerText.toLowerCase();
+      if (text.includes(filter)) {
+        item.style.display = "block";
+        visibleCount++;
+        if (text === filter) {
+          exactMatch = true;
+        }
+      } else {
+        item.style.display = "none";
+      }
+    });
+
+    if (forceOpen) {
+      if (visibleCount > 0) countryDropdown.classList.add("active");
+      else countryDropdown.classList.remove("active");
+      return;
+    }
+
+    // Hide if no matches, or if we have an exact match (user already selected it)
+    if (visibleCount === 0 || exactMatch) {
+      countryDropdown.classList.remove("active");
+    } else {
+      countryDropdown.classList.add("active");
+    }
+  }
+
+  // Show dropdown on click
+  countryInput.addEventListener("click", () => {
+    const val = countryInput.value.toLowerCase();
+    let isMatch = false;
+    items.forEach(i => { if (i.innerText.toLowerCase() === val) isMatch = true; });
+    
+    // If they click it while a valid country is already selected, clear it so they see the full list again
+    if (isMatch) {
+       countryInput.value = ""; 
+       countryInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    
+    updateDropdownVisibility(true);
+    
+    // Force open if empty so user sees options immediately
+    if (countryInput.value.trim() === "") {
+      items.forEach(item => item.style.display = "block");
+      countryDropdown.classList.add("active");
+    }
+  });
+
+  // Filter items on type
+  countryInput.addEventListener("input", () => {
+    updateDropdownVisibility();
+    if (countryInput.value.trim() === "") {
+      items.forEach(item => item.style.display = "block");
+      countryDropdown.classList.add("active");
+    }
+  });
+
+  // Select item
+  items.forEach(item => {
+    item.addEventListener("mousedown", (e) => {
+      e.preventDefault(); // Prevent input from losing focus before click fires
+      countryInput.value = item.innerText;
+      countryDropdown.classList.remove("active");
+      // Trigger input event for form validation logic
+      countryInput.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  });
+
+  // strictly enforce selection on blur
+  countryInput.addEventListener("blur", () => {
+    countryDropdown.classList.remove("active");
+    const typed = countryInput.value.toLowerCase();
+    let matchFound = false;
+    
+    items.forEach(item => {
+      if (item.innerText.toLowerCase() === typed) {
+        countryInput.value = item.innerText; // Fix casing
+        matchFound = true;
+      }
+    });
+    
+    // If they typed nonsense, automatically clear it out
+    if (!matchFound && countryInput.value !== "") {
+      countryInput.value = "";
+      countryInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
   });
 }
