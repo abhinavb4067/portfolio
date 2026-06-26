@@ -301,4 +301,20 @@ if (countryInput && countryDropdown) {
       countryInput.dispatchEvent(new Event('input', { bubbles: true }));
     }
   });
+
+  // Handle icon click to toggle
+  const countryIcon = document.getElementById("country-dropdown-icon");
+  if (countryIcon) {
+    countryIcon.addEventListener("mousedown", (e) => {
+      e.preventDefault(); // Prevent input blur which would instantly close it
+    });
+    countryIcon.addEventListener("click", () => {
+      if (countryDropdown.classList.contains("active")) {
+        countryDropdown.classList.remove("active");
+      } else {
+        countryInput.click();
+        countryInput.focus();
+      }
+    });
+  }
 }
