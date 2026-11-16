@@ -534,6 +534,15 @@
 
           <ul class="clients-list has-scrollbar">
             <li class="clients-item-wrapper">
+              <a href="https://www.thathwaa.com/" target="_blank" rel="noopener noreferrer">
+                <div class="clients-item">
+                  <img src="./assets/images/thathwaa_logo.png" alt="Thathwaa Communications logo">
+                </div>
+              </a>
+              <span class="client-name">Thathwaa</span>
+            </li>
+
+            <li class="clients-item-wrapper">
               <a href="https://holywaytravels.com" target="_blank" rel="noopener noreferrer">
                 <div class="clients-item">
                   <img src="./assets/images/holyway_logo.png" alt="Holyway Travels">
@@ -1112,6 +1121,51 @@
 
               </a>
             </li>
+
+            <li class="project-item  active">
+              <a href="javascript:void(0);" onclick="openProjectModal('ctrl_room_modal')">
+
+                <figure class="project-img"
+                  style="aspect-ratio: 2.08 / 1; border-radius: 16px; overflow: hidden; background: linear-gradient(135deg, #2b2f3a 0%, #11131a 100%); display: flex; align-items: center; justify-content: center;">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <ion-icon name="shield-checkmark" style="font-size: 48px; color: #ffb21c;"></ion-icon>
+                </figure>
+
+                <h3 class="project-title">Ctrl Room</h3>
+
+
+              </a>
+            </li>
+
+            <!-- Modal -->
+            <div id="ctrl_room_modal" class="modal" style="display:none;">
+              <div class="modal-content">
+                <span class="close" onclick="closeProjectModal('ctrl_room_modal')">&times;</span>
+                <h3>Ctrl Room</h3>
+                <p style="color: #000;">
+                  A security guard management system supporting multiple roles — Manager, Security Guard, and
+                  Event Coordinator — built as part of a team. My contributions:
+                </p>
+                <ul style="color: #000; padding-left: 20px; margin-top: 10px;">
+                  <li style="margin-bottom: 10px;">
+                    Co-architected a modular Django REST Framework backend with role-based REST APIs for
+                    integrated Manager, Security Guard, and Event Coordinator applications.
+                  </li>
+                  <li style="margin-bottom: 10px;">
+                    Engineered real-time chat and instantaneous push notification modules to facilitate
+                    emergency communications and guard dispatch during operational incidents.
+                  </li>
+                  <li style="margin-bottom: 10px;">
+                    Identified and resolved critical backend bugs; indexed database queries across control
+                    room dashboards, achieving marked improvements in response latency and operational
+                    reliability.
+                  </li>
+                </ul>
+              </div>
+            </div>
             <!-- Project Item -->
             <li class="project-item active">
               <a href="javascript:void(0);" onclick="openProjectModal('feature_detection_modal')">
