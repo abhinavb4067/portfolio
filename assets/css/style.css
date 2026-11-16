@@ -210,6 +210,14 @@ article {
 
 article { display: none; }
 
+article,
+.main-content,
+.portfolio,
+.projects {
+  min-width: 0;
+  max-width: 100%;
+}
+
 article.active {
   display: block;
   animation: fade 0.5s ease backwards;
@@ -469,16 +477,24 @@ main {
 
 .navbar-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
   padding: 0 10px;
 }
 
+.navbar-item {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
 .navbar-link {
+  display: block;
+  width: 100%;
   color: var(--light-gray);
   font-size: var(--fs-8);
-  padding: 20px 7px;
+  padding: 16px 4px;
+  white-space: nowrap;
   transition: color var(--transition-1);
 }
 
@@ -934,12 +950,16 @@ main {
 
 .project-list {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 30px;
   margin-bottom: 10px;
+  min-width: 0;
 }
 
-.project-item { display: none; }
+.project-item {
+  display: none;
+  min-width: 0;
+}
 
 .project-item.active {
   display: block;
@@ -951,11 +971,15 @@ main {
   100% { transform: scale(1); }
 }
 
-.project-item > a { width: 100%; }
+.project-item > a {
+  width: 100%;
+  min-width: 0;
+}
 
 .project-img {
   position: relative;
   width: 100%;
+  min-width: 0;
   height: 200px;
   border-radius: 16px;
   overflow: hidden;
@@ -1001,7 +1025,9 @@ main {
 .project-item-icon-box ion-icon { --ionicon-stroke-width: 50px; }
 
 .project-img img {
+  display: block;
   width: 100%;
+  max-width: 100%;
   height: 100%;
   object-fit: cover;
   transition: var(--transition-1);

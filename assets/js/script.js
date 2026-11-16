@@ -185,22 +185,21 @@ const navigationLinks = document.querySelectorAll("[data-nav-link]");
 const pages = document.querySelectorAll("[data-page]");
 
 // add event to all nav link
-for (let i = 0; i < navigationLinks.length; i++) {
-  navigationLinks[i].addEventListener("click", function () {
+navigationLinks.forEach((link) => {
+  link.addEventListener("click", () => {
+    const selectedPage = link.textContent.trim().toLowerCase();
 
-    for (let i = 0; i < pages.length; i++) {
-      if (this.innerHTML.toLowerCase() === pages[i].dataset.page) {
-        pages[i].classList.add("active");
-        navigationLinks[i].classList.add("active");
-        window.scrollTo(0, 0);
-      } else {
-        pages[i].classList.remove("active");
-        navigationLinks[i].classList.remove("active");
-      }
-    }
+    pages.forEach((page) => {
+      page.classList.toggle("active", page.dataset.page === selectedPage);
+    });
 
+    navigationLinks.forEach((navigationLink) => {
+      navigationLink.classList.toggle("active", navigationLink === link);
+    });
+
+    window.scrollTo(0, 0);
   });
-}
+});
 
 // Custom Searchable Dropdown Logic
 const countryInput = document.getElementById("country-input");
